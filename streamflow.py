@@ -82,6 +82,14 @@ def main():
     x, flows = load_streamflow_data(filename)
     sites = ['10163000', '10155200', '10155500', '10154200', '10155000']
     summarize(x, flows, sites)
+
+    threshold = float(input('Enter flow threshold (cfs): '))
+    print(f'Hours above {threshold:g} cfs:')
+    # Each reading above the threshold represents 15 minutes, or 0.25 hours.
+    for gauge_index, site in enumerate(sites):
+        hours_above_threshold = np.sum(flows[:, gauge_index] > threshold) * 0.25
+        print(f'{site}: {hours_above_threshold:.2f} hours')
+
     plot_streamflow(x, flows)
 
 
